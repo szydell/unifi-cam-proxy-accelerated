@@ -41,6 +41,9 @@ ENV PKG_CONFIG_PATH=/root/ffmpeg_build/lib/pkgconfig
 WORKDIR /root/ffmpeg_sources
 RUN git clone https://git.ffmpeg.org/ffmpeg.git
 
+# Clone unifi-cam-proxy for entrypoint script
+RUN git clone https://github.com/keshavdv/unifi-cam-proxy.git
+
 # Configure FFmpeg
 WORKDIR /root/ffmpeg_sources/ffmpeg
 RUN CC=/usr/bin/gcc-13 CXX=/usr/bin/g++-13 ./configure \
@@ -121,11 +124,10 @@ RUN git clone https://github.com/keshavdv/unifi-cam-proxy.git /app && \
     pip3 install -r requirements.txt && \
     pip3 install -e .
 
-# Copy entrypoint script and make it executable
-COPY docker/entrypoint.sh /entrypoint.sh
+# Copy entrypoint from builder and make it executable
+COPY --from=ffmpeg-builder /root/ffmpeg_sources/unifi-cam-proxy/docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 # Set entrypoint and default command
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["python3", "-m", "unifi_cam_proxy"]
-
