@@ -1,0 +1,10 @@
+.git
+.gitignore
+.vscode
+docs
+tests
+*.pyc
+__pycache__
+*.md
+LICENSE
+
