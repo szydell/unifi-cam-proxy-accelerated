@@ -129,5 +129,9 @@ COPY --from=ffmpeg-builder /root/ffmpeg_sources/unifi-cam-proxy/docker/entrypoin
 RUN chmod +x /entrypoint.sh
 
 # Set entrypoint and default command
-ENTRYPOINT ["/entrypoint.sh"]
-CMD ["python3", "-m", "unifi_cam_proxy"]
+#ENTRYPOINT ["/entrypoint.sh"]
+#CMD ["python3", "-m", "unifi_cam_proxy"]
+ENTRYPOINT ["/bin/bash"]
+CMD ["-c", "echo 'Python Path:' && python3 -c \"import sys; print(sys.path)\" && echo '\nInstalled Packages:' && pip3 list && echo '\nTrying to import pyunifiprotect:' && python3 -c \"import pyunifiprotect; print('Import successful, location:', pyunifiprotect.__file__)\" || echo 'Import failed'"]
+
+
