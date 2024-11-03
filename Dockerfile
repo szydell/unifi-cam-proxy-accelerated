@@ -1,17 +1,17 @@
-FROM nvcr.io/nvidia/cuda:12.6.1-runtime-fedora38
+FROM nvcr.io/nvidia/cuda:12.6.2-runtime-amzn2023
 
-# Aktualizacja systemu i instalacja zależności
+# System update and dependency installation
 RUN dnf update -y && \
     dnf install -y python3 python3-pip ffmpeg
 
-# Instalacja unifi-cam-proxy z konkretnej wersji :dev
+# Install unifi-cam-proxy from the specific dev branch
 RUN pip3 install --upgrade pip && \
     pip3 install "git+https://github.com/keshavdv/unifi-cam-proxy@dev"
 
-# Zmienne środowiskowe i ustawienia dla kontenera
+# Set environment variables for the container
 ENV PYTHONUNBUFFERED=1 \
     PYTHONIOENCODING=utf-8
 
-# Komenda startowa
+# Default command
 CMD ["unifi-cam-proxy"]
 
